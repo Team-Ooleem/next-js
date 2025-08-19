@@ -1,6 +1,8 @@
 // components/BookItem.tsx
-// [정적] 교보 리스트형
+'use client';
 import Image from 'next/image';
+import { useState } from 'react';
+
 export type Card = {
     edition_id: number;
     cover_image_url: string;
@@ -21,7 +23,13 @@ function formatKRW(value?: number) {
     return new Intl.NumberFormat('ko-KR').format(value);
 }
 
-export default function Book_Item({ card }: { card: Card }) {
+export default function BookItem({ card }: { card: Card }) {
+    const [isLiked, setIsLiked] = useState(false);
+
+    const handleHeartclick = () => {
+        setIsLiked(!isLiked);
+    };
+
     return (
         <li className='prod_item'>
             {/* ✅ 카드형 스타일 */}
@@ -39,7 +47,6 @@ export default function Book_Item({ card }: { card: Card }) {
                         />
                     </div>
                 </div>
-
                 {/* 가운데: 본문 */}
                 <div className='flex-1 min-w-0'>
                     <h3 className='text-[20px]  text-black leading-snug break-keep'>
@@ -78,17 +85,29 @@ export default function Book_Item({ card }: { card: Card }) {
                         소장 {formatKRW(card.list_price)}원
                     </p>
                 </div>
-
                 {/* 우: 하트/버튼 */}
                 <div className='shrink-0 flex flex-col items-end gap-2 min-w-[96px]'>
-                    <div className='flex items-center gap-1 text-gray-500'>
-                        <span>♡</span>
-                        <span className='text-sm'>{card.like_count}</span>
+                    <div
+                        className='flex items-center gap-1 text-gray-500 cursor-pointer hover:opacity-70 transition-opacity'
+                        onClick={handleHeartclick}
+                    >
+                        <svg
+                            className={`w-4 h-4 ${isLiked ? 'text-red-500 fill-current' : 'text-gray-500 fill-none'} transition-colors duration-200`}
+                            viewBox='0 0 24 24'
+                            stroke='currentColor'
+                            strokeWidth='2'
+                        >
+                            <path d='M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z' />
+                        </svg>
+                        <span className='text-sm'>
+                            {isLiked ? card.like_count + 1 : card.like_count}
+                        </span>
                     </div>
-                    <div className='w-24 rounded-md bg-gray-700 text-white py-2 text-center text-sm select-none'>
+
+                    <div className='w-24 rounded-md bg-gray-700 hover:bg-gray-800 active:bg-gray-900 active:scale-95 text-white py-2 text-center text-sm select-none cursor-pointer transition-all duration-200'>
                         장바구니
                     </div>
-                    <div className='w-24 rounded-md bg-indigo-700 text-white py-2 text-center text-sm select-none'>
+                    <div className='w-24 rounded-md bg-indigo-700 hover:bg-indigo-800 active:bg-indigo-900 active:scale-95 text-white py-2 text-center text-sm select-none cursor-pointer transition-all duration-200'>
                         바로구매
                     </div>
                 </div>
