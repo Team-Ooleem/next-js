@@ -33,7 +33,7 @@ function toCard(r: any): Card {
     };
 }
 
-export default function SearchPage({ keyword = '' }: searchParams) {
+export default function SearchPage() {
     const searchParams = useSearchParams();
     const router = useRouter();
 
@@ -44,6 +44,7 @@ export default function SearchPage({ keyword = '' }: searchParams) {
 
     //const keyword = searchParams.keyword || '';
     const currentPage = Number(searchParams.get('page') || 1);
+    const keyword = searchParams.get('keyword') || '';
 
     useEffect(() => {
         const fetchBooks = async () => {
@@ -56,6 +57,7 @@ export default function SearchPage({ keyword = '' }: searchParams) {
                 setBooks(data.books);
                 setTotal(data.totalCount);
                 setTotalPages(data.totalPages);
+                //console.log(`잘뜸`, keyword);
             } catch (err) {
                 console.error('Failed to fetch books:', err);
             }
@@ -72,7 +74,7 @@ export default function SearchPage({ keyword = '' }: searchParams) {
             <h1 className='text-xl font-bold mb-4'>
                 {`'${keyword}'에 대한 ${total}개의 검색 결과`}
             </h1>
-            <div className='grid grid-cols-2 gap-4'>
+            <div className='gap-4'>
                 {books.map((book) => (
                     <BookItem card={toCard(book)} />
                 ))}
