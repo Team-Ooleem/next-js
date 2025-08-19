@@ -49,7 +49,7 @@ export default function BookItem({ card }: { card: Card }) {
                 </div>
                 {/* 가운데: 본문 */}
                 <div className='flex-1 min-w-0'>
-                    <h3 className='text-[20px]  text-black leading-snug break-keep'>
+                    <h3 className='text-[20px] text-black leading-snug break-keep hover:underline hover:underline-offset-2 hover:decoration-1'>
                         {card.display_title || '(제목 없음)'}
                     </h3>
 
@@ -58,10 +58,13 @@ export default function BookItem({ card }: { card: Card }) {
                     )}
 
                     {(card.authors || card.translators) && (
-                        <p className='mt-1 text-sm text-gray-500'>
+                        <p className='mt-1 text-sm text-gray-500 '>
                             {card.authors && (
                                 <span>
-                                    <span className='text-black'>{card.authors}</span> 저자(글)
+                                    <span className='text-black leading-snug break-keep hover:underline hover:underline-offset-2 hover:decoration-1'>
+                                        {card.authors}
+                                    </span>
+                                    저자(글)
                                 </span>
                             )}
                             {card.authors && card.translators && (
@@ -69,14 +72,18 @@ export default function BookItem({ card }: { card: Card }) {
                             )}
                             {card.translators && (
                                 <span>
-                                    <span className='text-black'>{card.translators}</span> 번역
+                                    <span className='text-black leading-snug break-keep hover:underline hover:underline-offset-2 hover:decoration-1'>
+                                        {card.translators}
+                                    </span>
+                                    번역
                                 </span>
                             )}
                         </p>
                     )}
-
                     <p className='mt-1 text-sm text-gray-600'>
-                        {card.publisher_name}
+                        <span className='hover:underline cursor-pointer'>
+                            {card.publisher_name}
+                        </span>
                         {card.release_ko && <span> · {card.release_ko}</span>}
                     </p>
 
@@ -104,10 +111,10 @@ export default function BookItem({ card }: { card: Card }) {
                         </span>
                     </div>
 
-                    <div className='w-24 rounded-md bg-gray-700 hover:bg-gray-800 active:bg-gray-900 active:scale-95 text-white py-2 text-center text-sm select-none cursor-pointer transition-all duration-200'>
+                    <div className='w-24 rounded-md bg-gray-500 hover:bg-gray-600 active:bg-gray-900 active:scale-95 text-white py-2 text-center text-sm select-none cursor-pointer transition-all duration-200'>
                         장바구니
                     </div>
-                    <div className='w-24 rounded-md bg-indigo-700 hover:bg-indigo-800 active:bg-indigo-900 active:scale-95 text-white py-2 text-center text-sm select-none cursor-pointer transition-all duration-200'>
+                    <div className='w-24 rounded-md bg-indigo-500 hover:bg-indigo-800 active:bg-indigo-900 active:scale-95 text-white py-2 text-center text-sm select-none cursor-pointer transition-all duration-200'>
                         바로구매
                     </div>
                 </div>
