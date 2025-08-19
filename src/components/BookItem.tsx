@@ -21,7 +21,7 @@ function formatKRW(value?: number) {
     return new Intl.NumberFormat('ko-KR').format(value);
 }
 
-export default function Book_Item({ card }: { card: Card }) {
+export default function BookItem({ card }: { card: Card }) {
     return (
         <li className='prod_item'>
             {/* ✅ 카드형 스타일 */}
