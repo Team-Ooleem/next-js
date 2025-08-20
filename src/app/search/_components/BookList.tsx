@@ -7,8 +7,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import BookItem, { type Card } from '@/components/BookItem';
 import Pagination from '@/components/pagination';
 
-// local functions
-// 예시: API 결과 r -> Card
+// API 응답 → Card 매핑 함수
 function toCard(r: any): Card {
     return {
         edition_id: r.edition_id,
@@ -25,32 +24,43 @@ function toCard(r: any): Card {
     };
 }
 
+type BookListProps = {
+    sort: 'latest' | 'title' | 'price_asc' | 'price_desc';
+    pageSize: 3 | 5 | 10 | 20;
+};
+
 // API 요청 함수
-const fetchBooks = async (keyword: string, page: number) => {
+const fetchBooks = async (keyword: string, currentPage: number, pageSize: number, sort: string) => {
     const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}search`, {
         params: {
-            keyword: keyword,
-            page: page,
+            keyword,
+            page: currentPage,
+            sort,
+            len: pageSize,
         },
     });
     return res.data;
 };
 
-export default function BookList() {
-    const searchParams: URLSearchParams = useSearchParams();
+export default function BookList({ sort, pageSize }: BookListProps) {
     const router = useRouter();
+    const searchParams = useSearchParams();
 
     const currentPage = Number(searchParams.get('page') || 1);
     const keyword = searchParams.get('keyword') || '';
 
     // TanStack Query를 사용하여 데이터 가져오기
     const { data, isLoading, error } = useQuery({
-        queryKey: ['books', keyword, currentPage],
-        queryFn: () => fetchBooks(keyword, currentPage),
+        queryKey: ['books', keyword, currentPage, sort, pageSize],
+        queryFn: () => fetchBooks(keyword, currentPage, pageSize, sort),
     });
 
+    // // keyword, page는 URL에서만 가져옴
+    // const currentPage = Number(searchParams.get('page') || 1);
+    // const keyword = searchParams.get('keyword') || '';
+
     const handlePageChange = (newPage: number) => {
-        router.push(`?keyword=${keyword}&page=${newPage}`);
+        router.push(`?keyword=${keyword}&page=${newPage}&sort=${sort}&len=${pageSize}`);
     };
 
     const books = data?.books || [];
@@ -63,6 +73,7 @@ export default function BookList() {
                 <span style={{ color: '#3c9a17' }}>{keyword ? `${keyword}에 대한` : '전체'}</span>{' '}
                 <span className='text-black'>{total}</span>개의 검색 결과
             </h1>
+
             <div className='gap-4'>
                 {books.map((book: any) => (
                     <BookItem key={book.edition_id} card={toCard(book)} />
