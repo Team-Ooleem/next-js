@@ -27,43 +27,41 @@ export default function SearchPage() {
 
     const [sort, setSort] = useState(initialSort);
     const [pageSize, setPageSize] = useState(initialPageSize);
-    const [display_title , setDisplay_title ] = useState(initialDisplayTitle);
-    const [publisher_name , setPublisher_name] = useState(initialPublisherName);
+    const [display_title, setDisplay_title] = useState(initialDisplayTitle);
+    const [publisher_name, setPublisher_name] = useState(initialPublisherName);
     const [authors, setAuthors] = useState(initialAuthors);
 
     useEffect(() => {
         const keyword = searchParams.get('keyword') || '';
         const page = searchParams.get('page') || 1;
-      
+
         const params = new URLSearchParams();
         params.set('keyword', keyword);
         params.set('page', String(page));
         params.set('sort', sort);
         params.set('len', String(pageSize));
-      
-        console.log("hi");
 
         // 체크된 경우에만 추가
         if (display_title) {
-          params.set('display_title', keyword);
+            params.set('display_title', keyword);
         } else {
-          params.delete('display_title');
+            params.delete('display_title');
         }
-      
+
         if (publisher_name) {
-          params.set('publisher_name', keyword);
+            params.set('publisher_name', keyword);
         } else {
-          params.delete('publisher_name');
+            params.delete('publisher_name');
         }
-      
+
         if (authors) {
-          params.set('authors', keyword);
+            params.set('authors', keyword);
         } else {
-          params.delete('authors');
+            params.delete('authors');
         }
-      
+
         router.replace(`/search?${params.toString()}`);
-      }, [sort, pageSize, display_title, publisher_name, authors]);
+    }, [sort, pageSize, display_title, publisher_name, authors]);
 
     return (
         // <div className='p-6'>
@@ -75,29 +73,29 @@ export default function SearchPage() {
         //     />
         //     <BookList sort={sort} pageSize={pageSize} />
         // </div>
-        <div className="p-6 flex">
-        {/* 왼쪽 사이드 필터 */}
-        <div className="w-1/4 pr-4">
-          <FilterSidebar
-            display_title = {display_title}
-            setDisplay_title = {setDisplay_title}
-            publisher_name = {publisher_name}
-            setPublisher_name = {setPublisher_name}
-            authors = {authors}
-            setAuthors = {setAuthors}
-          />
+        <div className='p-6 flex'>
+            {/* 왼쪽 사이드 필터 */}
+            <div className='w-1/4 pr-4'>
+                <FilterSidebar
+                    display_title={display_title}
+                    setDisplay_title={setDisplay_title}
+                    publisher_name={publisher_name}
+                    setPublisher_name={setPublisher_name}
+                    authors={authors}
+                    setAuthors={setAuthors}
+                />
+            </div>
+
+            {/* 오른쪽 결과 영역 */}
+            <div className='w-3/4'>
+                <SortAndFilter
+                    sort={sort}
+                    onChangeSort={setSort}
+                    pageSize={pageSize}
+                    onChangePageSize={setPageSize}
+                />
+                <BookList sort={sort} pageSize={pageSize} />
+            </div>
         </div>
-  
-        {/* 오른쪽 결과 영역 */}
-        <div className="w-3/4">
-          <SortAndFilter
-            sort={sort}
-            onChangeSort={setSort}
-            pageSize={pageSize}
-            onChangePageSize={setPageSize}
-          />
-          <BookList sort={sort} pageSize={pageSize} />
-        </div>
-      </div>
     );
 }

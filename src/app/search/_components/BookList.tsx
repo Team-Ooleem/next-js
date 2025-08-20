@@ -30,13 +30,24 @@ type BookListProps = {
 };
 
 // API 요청 함수
-const fetchBooks = async (keyword: string, currentPage: number, pageSize: number, sort: string) => {
+const fetchBooks = async (
+    keyword: string,
+    currentPage: number,
+    pageSize: number,
+    sort: string,
+    display_title: boolean,
+    publisher_name: boolean,
+    authors: boolean,
+) => {
     const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}api/search`, {
         params: {
             keyword,
             page: currentPage,
             sort,
             len: pageSize,
+            display_title,
+            publisher_name,
+            authors,
         },
     });
     return res.data;
@@ -49,10 +60,23 @@ export default function BookList({ sort, pageSize }: BookListProps) {
     const currentPage = Number(searchParams.get('page') || 1);
     const keyword = searchParams.get('keyword') || '';
 
+    const display_title = searchParams.get('display_title') ? true : false;
+    const publisher_name = searchParams.get('publisher_name') ? true : false;
+    const authors = searchParams.get('authors') ? true : false;
+
     // TanStack Query를 사용하여 데이터 가져오기
     const { data, isLoading, error } = useQuery({
         queryKey: ['books', keyword, currentPage, sort, pageSize],
-        queryFn: () => fetchBooks(keyword, currentPage, pageSize, sort),
+        queryFn: () =>
+            fetchBooks(
+                keyword,
+                currentPage,
+                pageSize,
+                sort,
+                display_title,
+                publisher_name,
+                authors,
+            ),
     });
 
     // // keyword, page는 URL에서만 가져옴
