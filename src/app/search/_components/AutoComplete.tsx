@@ -13,19 +13,12 @@ import { Book } from '../_types/book';
 
 interface AutoCompleteProps {
     keyword: string;
-    searchType: 'title' | 'author';
     onSelectBook: (book: Book) => void;
     isVisible: boolean;
     onClose: () => void;
 }
 
-function AutoComplete({
-    keyword,
-    searchType,
-    onSelectBook,
-    isVisible,
-    onClose,
-}: AutoCompleteProps) {
+function AutoComplete({ keyword, onSelectBook, isVisible, onClose }: AutoCompleteProps) {
     const containerRef = useRef<HTMLDivElement>(null);
 
     // 디바운싱된 키워드 (300ms 지연)
@@ -38,8 +31,8 @@ function AutoComplete({
         isError,
         error,
     } = useQuery({
-        queryKey: ['autocomplete', debouncedKeyword, searchType],
-        queryFn: () => fetchAutoCompleteBooks(debouncedKeyword, searchType),
+        queryKey: ['autocomplete', debouncedKeyword],
+        queryFn: () => fetchAutoCompleteBooks(debouncedKeyword),
         enabled: debouncedKeyword.trim().length > 0 && isVisible, // 조건부 실행
 
         // === 다양한 useQuery 옵션들 (주석 처리) ===

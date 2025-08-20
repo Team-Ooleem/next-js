@@ -8,7 +8,6 @@ import { Book } from '../_types/book';
 
 function SearchBox() {
     const [keyword, setKeyword] = useState<string>('');
-    const [searchType, setSearchType] = useState<'title' | 'author'>('title');
     const [showAutoComplete, setShowAutoComplete] = useState<boolean>(false);
     const [selectedBook, setSelectedBook] = useState<Book | null>(null);
     const inputRef = useRef<HTMLInputElement>(null);
@@ -24,13 +23,6 @@ function SearchBox() {
         }
     };
 
-    const handleSearchTypeChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
-        setSearchType(e.target.value as 'title' | 'author');
-        // 검색 타입이 변경되면 자동완성 초기화
-        setShowAutoComplete(false);
-        setSelectedBook(null);
-    };
-
     const handleSubmit = (e: React.FormEvent): void => {
         e.preventDefault();
         if (selectedBook) {
@@ -38,7 +30,7 @@ function SearchBox() {
             console.log('선택된 책으로 검색:', selectedBook);
         } else {
             // 일반 검색
-            console.log('검색 타입:', searchType === 'title' ? '책 제목' : '저자');
+            console.log('검색 타입:', '책 제목');
             console.log('검색어:', keyword);
         }
         setShowAutoComplete(false);
@@ -73,7 +65,7 @@ function SearchBox() {
         if (selectedBook) {
             return selectedBook.title;
         }
-        return searchType === 'title' ? '책 제목을 입력해주세요.' : '저자명을 입력해주세요.';
+        return '책 제목을 입력해주세요.';
     };
 
     return (
@@ -81,17 +73,6 @@ function SearchBox() {
             <form onSubmit={handleSubmit}>
                 <div className='relative'>
                     <div className='flex items-center bg-white border border-gray-300 rounded-4xl shadow-sm focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-blue-500'>
-                        <select
-                            name='searchType'
-                            value={searchType}
-                            onChange={handleSearchTypeChange}
-                            className='px-3 py-3 text-gray-900 bg-transparent border-0 focus:outline-none focus:ring-0 cursor-pointer'
-                            aria-label='검색 타입 선택'
-                        >
-                            <option value='title'>책 제목</option>
-                            <option value='author'>저자</option>
-                        </select>
-                        <div className='w-px h-6 bg-gray-300 mx-2'></div>
                         <input
                             ref={inputRef}
                             name='keyword'
@@ -155,7 +136,6 @@ function SearchBox() {
             {/* AutoComplete 컴포넌트 */}
             <AutoComplete
                 keyword={keyword}
-                searchType={searchType}
                 onSelectBook={handleBookSelect}
                 isVisible={showAutoComplete}
                 onClose={handleCloseAutoComplete}
