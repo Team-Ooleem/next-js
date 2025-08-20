@@ -30,6 +30,28 @@ export default function BookItem({ card }: { card: Card }) {
         setIsLiked(!isLiked);
     };
 
+    const insertCart = async () => {
+        const token = localStorage.getItem('accessToken');
+        const user_id = localStorage.getItem('userId');
+        console.log({
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+        });
+        const res = await fetch('http://localhost:4000/api/cart', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ userId: user_id, bookId: card.edition_id, quantity: 1 }),
+        });
+        if (res.ok) {
+            alert('장바구니에 추가되었습니다.');
+        } else {
+            alert('장바구니 추가에 실패했습니다.');
+        }
+    };
+
     return (
         <li className='prod_item list-none p-0 m-0'>
             {/* ✅ 카드형 스타일 */}
@@ -111,7 +133,10 @@ export default function BookItem({ card }: { card: Card }) {
                         </span>
                     </div>
 
-                    <div className='w-24 rounded-md bg-gray-500 hover:bg-gray-600 active:bg-gray-900 active:scale-95 text-white py-2 text-center text-sm select-none cursor-pointer transition-all duration-200'>
+                    <div
+                        className='w-24 rounded-md bg-gray-500 hover:bg-gray-600 active:bg-gray-900 active:scale-95 text-white py-2 text-center text-sm select-none cursor-pointer transition-all duration-200'
+                        onClick={insertCart}
+                    >
                         장바구니
                     </div>
                     <div className='w-24 rounded-md bg-indigo-500 hover:bg-indigo-800 active:bg-indigo-900 active:scale-95 text-white py-2 text-center text-sm select-none cursor-pointer transition-all duration-200'>
