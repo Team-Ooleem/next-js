@@ -2,8 +2,13 @@
 
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
+
+// components
 import BookItem, { type Card } from '../../components/BookItem';
 import Pagination from '../../components/pagination';
+import SearchBox from './_components/SearchBox';
+
+// types
 interface searchParams {
     keyword?: string;
     page?: string;
@@ -16,6 +21,7 @@ interface Book {
     author: string;
 }
 
+// local functions
 // 예시: API 결과 r -> Card
 function toCard(r: any): Card {
     return {
@@ -71,6 +77,7 @@ export default function SearchPage() {
 
     return (
         <div className='p-6'>
+            <SearchBox />
             <h1 className='text-xl font-bold mb-4'>
                 {`'${keyword}'에 대한 ${total}개의 검색 결과`}
             </h1>
