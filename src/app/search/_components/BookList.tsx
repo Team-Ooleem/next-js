@@ -31,7 +31,7 @@ type BookListProps = {
 
 // API 요청 함수
 const fetchBooks = async (keyword: string, currentPage: number, pageSize: number, sort: string) => {
-    const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}search`, {
+    const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}api/search`, {
         params: {
             keyword,
             page: currentPage,
