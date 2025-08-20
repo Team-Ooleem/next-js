@@ -37,15 +37,40 @@ function SearchBox() {
     const handleSubmit = (e: React.FormEvent): void => {
         e.preventDefault();
 
-        // 검색 시에는 keyword만 포함하고 나머지는 모두 리셋
-        const searchParams = new URLSearchParams();
+        // 기존 쿼리 파라미터들을 유지하면서 keyword만 업데이트
+        const newSearchParams = new URLSearchParams(searchParams.toString());
 
         if (keyword.trim()) {
-            searchParams.set('keyword', keyword.trim());
+            newSearchParams.set('keyword', keyword.trim());
+            // URL에 존재하는 파라미터들만 keyword 값으로 설정
+            if (searchParams.has('publisher_name')) {
+                newSearchParams.set('publisher_name', keyword.trim());
+            }
+            if (searchParams.has('authors')) {
+                newSearchParams.set('authors', keyword.trim());
+            }
+            if (searchParams.has('display_title')) {
+                newSearchParams.set('display_title', keyword.trim());
+            }
+        } else {
+            newSearchParams.delete('keyword');
+            // URL에 존재하는 파라미터들만 삭제
+            if (searchParams.has('publisher_name')) {
+                newSearchParams.delete('publisher_name');
+            }
+            if (searchParams.has('authors')) {
+                newSearchParams.delete('authors');
+            }
+            if (searchParams.has('display_title')) {
+                newSearchParams.delete('display_title');
+            }
         }
 
+        // page는 검색 시 1페이지로 리셋
+        newSearchParams.set('page', '1');
+
         // 검색 결과 페이지로 이동
-        const queryString = searchParams.toString();
+        const queryString = newSearchParams.toString();
         const searchUrl = queryString ? `/search?${queryString}` : '/search';
         router.push(searchUrl);
 
