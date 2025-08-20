@@ -30,6 +30,7 @@ type BookListProps = {
 };
 
 // API 요청 함수
+
 const fetchBooks = async (
     keyword: string,
     currentPage: number,
@@ -39,6 +40,7 @@ const fetchBooks = async (
     publisher_name: boolean,
     authors: boolean,
 ) => {
+
     const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}api/search`, {
         params: {
             keyword,

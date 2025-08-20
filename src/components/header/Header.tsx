@@ -194,7 +194,10 @@ const Header: React.FC = () => {
 
                         {/* Right Section - Cart & User Profile */}
                         <div className='flex items-center space-x-3'>
-                            <button className='w-8 h-8 border-2 border-gray-300 rounded-full flex items-center justify-center hover:border-gray-400 transition-colors'>
+                            <Link
+                                href='/cart'
+                                className='w-8 h-8 border-2 border-gray-300 rounded-full flex items-center justify-center hover:border-gray-400 transition-colors'
+                            >
                                 <svg
                                     className='w-4 h-4 text-gray-700'
                                     fill='none'
@@ -208,7 +211,7 @@ const Header: React.FC = () => {
                                         d='M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z'
                                     />
                                 </svg>
-                            </button>
+                            </Link>
 
                             <button className='w-8 h-8 bg-green-500 rounded-full flex items-center justify-center hover:bg-green-600 transition-colors'>
                                 <svg
