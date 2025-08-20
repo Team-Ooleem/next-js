@@ -1,16 +1,26 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useEffect, useRef, useState } from 'react';
 import AutoComplete from './AutoComplete';
 
 // types
 import { Book } from '@/types/book';
 
 function SearchBox() {
+    const router = useRouter();
+    const searchParams = useSearchParams();
+
     const [keyword, setKeyword] = useState<string>('');
     const [showAutoComplete, setShowAutoComplete] = useState<boolean>(false);
     const [selectedBook, setSelectedBook] = useState<Book | null>(null);
     const inputRef = useRef<HTMLInputElement>(null);
+
+    // URL의 query parameter에서 keyword 값을 읽어서 초기값 설정
+    useEffect(() => {
+        const urlKeyword = searchParams.get('keyword') || '';
+        setKeyword(urlKeyword);
+    }, [searchParams]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
         const value = e.target.value;
@@ -25,14 +35,19 @@ function SearchBox() {
 
     const handleSubmit = (e: React.FormEvent): void => {
         e.preventDefault();
-        if (selectedBook) {
-            // 선택된 책이 있으면 해당 책으로 검색
-            console.log('선택된 책으로 검색:', selectedBook);
-        } else {
-            // 일반 검색
-            console.log('검색 타입:', '책 제목');
-            console.log('검색어:', keyword);
+
+        // 검색 시에는 keyword만 포함하고 나머지는 모두 리셋
+        const searchParams = new URLSearchParams();
+
+        if (keyword.trim()) {
+            searchParams.set('keyword', keyword.trim());
         }
+
+        // 검색 결과 페이지로 이동
+        const queryString = searchParams.toString();
+        const searchUrl = queryString ? `/search?${queryString}` : '/search';
+        router.push(searchUrl);
+
         setShowAutoComplete(false);
     };
 
