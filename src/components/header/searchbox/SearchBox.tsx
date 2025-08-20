@@ -20,6 +20,7 @@ function SearchBox() {
     useEffect(() => {
         const urlKeyword = searchParams.get('keyword') || '';
         setKeyword(urlKeyword);
+        setShowAutoComplete(false);
     }, [searchParams]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
