@@ -1,15 +1,30 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
 import Image from 'next/image';
 import { useEffect, useRef } from 'react';
 
 // hooks
 import { useDebounce } from '@/hooks/useDebounce';
 
+// apis
+export const fetchAutoCompleteBooks = async (keyword: string): Promise<Book[]> => {
+    const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}api/autocomplete`, {
+        params: {
+            keyword,
+        },
+        headers: {
+            Accept: 'application/json',
+            'Cache-Control': 'no-cache',
+        },
+    });
+
+    return response.data.books || [];
+};
+
 // types
-import { fetchAutoCompleteBooks } from '../_api/api';
-import { Book } from '../_types/book';
+import { Book } from '@/types/book';
 
 interface AutoCompleteProps {
     keyword: string;
