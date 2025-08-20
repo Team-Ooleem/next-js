@@ -31,7 +31,7 @@ export default function BookItem({ card }: { card: Card }) {
     };
 
     return (
-        <li className='prod_item'>
+        <li className='prod_item list-none p-0 m-0'>
             {/* ✅ 카드형 스타일 */}
             <article className='flex items-start gap-5 p-4 mb-4 rounded-md border border-gray-200 shadow-sm bg-white'>
                 {/* 좌: 썸네일 */}
