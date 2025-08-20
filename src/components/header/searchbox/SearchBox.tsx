@@ -4,7 +4,7 @@ import { useRef, useState } from 'react';
 import AutoComplete from './AutoComplete';
 
 // types
-import { Book } from '../_types/book';
+import { Book } from '@/types/book';
 
 function SearchBox() {
     const [keyword, setKeyword] = useState<string>('');

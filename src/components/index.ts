@@ -1,8 +1,11 @@
 // UI Components
 export { Button } from './ui/Button';
+export { Card, CardContent, CardFooter, CardHeader, CardTitle } from './ui/Card';
 export { Input } from './ui/Input';
-export { Card, CardHeader, CardTitle, CardContent, CardFooter } from './ui/Card';
 
 // Feature Components
-export { UserCard } from './features/UserCard';
 export { ProductCard } from './features/ProductCard';
+export { UserCard } from './features/UserCard';
+
+// Layout Components
+export { default as SideBar } from './sidebar/SideBar';
