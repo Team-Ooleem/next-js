@@ -3,13 +3,8 @@
 import { useRef, useState } from 'react';
 import AutoComplete from './AutoComplete';
 
-interface Book {
-    id: number;
-    title: string;
-    author: string;
-    coverImage: string;
-    price: number;
-}
+// types
+import { Book } from '../_types/book';
 
 function SearchBox() {
     const [keyword, setKeyword] = useState<string>('');
